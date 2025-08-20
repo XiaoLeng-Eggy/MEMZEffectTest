@@ -30,8 +30,9 @@ namespace MEMZEffect
         [DllImport("user32.dll")]
         private static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr LoadIcon(IntPtr hInstance, string lpIconName);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
+
 
         [DllImport("gdi32.dll")]
         private static extern bool StretchBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int nWidthSrc, int nHeightSrc, uint dwRop);
@@ -114,6 +115,12 @@ namespace MEMZEffect
         private static RECT desktopRect;
         private static Random random = new Random();
 
+        // 添加MAKEINTRESOURCE等效方法
+        private static IntPtr MAKEINTRESOURCE(int resourceId)
+        {
+            return new IntPtr(resourceId);
+        }
+
         // 初始化函数
         static EffectModule()
         {
@@ -179,7 +186,7 @@ namespace MEMZEffect
         // 鼠标画error图标
         public static void DrawErrorIconAtMouse()
         {
-            IntPtr hIcon = LoadIcon(IntPtr.Zero, IDI_ERROR.ToString());
+            IntPtr hIcon = LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR));
             IntPtr dc = GetDC(IntPtr.Zero);
             DrawIcon(dc, GetMouseX(), GetMouseY(), hIcon);
             ReleaseDC(IntPtr.Zero, dc);
@@ -193,14 +200,14 @@ namespace MEMZEffect
             int screenHeight = GetScreenHeight();
 
             // 绘制各种图标
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_ERROR.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_HAND.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
 
             ReleaseDC(IntPtr.Zero, dc);
         }
@@ -215,22 +222,22 @@ namespace MEMZEffect
             int mouseY = GetMouseY();
 
             // 在鼠标位置和随机位置绘制各种图标
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_ERROR.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_ERROR.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_HAND.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_HAND.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
 
             ReleaseDC(IntPtr.Zero, dc);
         }
@@ -242,14 +249,14 @@ namespace MEMZEffect
             int mouseX = GetMouseX();
             int mouseY = GetMouseY();
 
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_ERROR.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_HAND.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
 
             ReleaseDC(IntPtr.Zero, dc);
         }
@@ -261,8 +268,8 @@ namespace MEMZEffect
             int mouseX = GetMouseX();
             int mouseY = GetMouseY();
 
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
 
             ReleaseDC(IntPtr.Zero, dc);
         }
@@ -271,7 +278,7 @@ namespace MEMZEffect
         public static void DrawWarningIconAtMouse()
         {
             IntPtr dc = GetDC(IntPtr.Zero);
-            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
+            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -279,7 +286,7 @@ namespace MEMZEffect
         public static void DrawInfoIconAtMouse()
         {
             IntPtr dc = GetDC(IntPtr.Zero);
-            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
+            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -287,7 +294,7 @@ namespace MEMZEffect
         public static void DrawQuestionIconAtMouse()
         {
             IntPtr dc = GetDC(IntPtr.Zero);
-            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
+            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -295,7 +302,7 @@ namespace MEMZEffect
         public static void DrawShieldIconAtMouse()
         {
             IntPtr dc = GetDC(IntPtr.Zero);
-            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
+            DrawIcon(dc, GetMouseX(), GetMouseY(), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -500,7 +507,7 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_ERROR.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -510,7 +517,7 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WARNING.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -520,8 +527,8 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_APPLICATION.ToString()));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_WINLOGO.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -531,7 +538,7 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_SHIELD.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -541,7 +548,7 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_QUESTION.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
@@ -551,7 +558,7 @@ namespace MEMZEffect
             IntPtr dc = GetDC(IntPtr.Zero);
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, IDI_INFORMATION.ToString()));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
             ReleaseDC(IntPtr.Zero, dc);
         }
 
