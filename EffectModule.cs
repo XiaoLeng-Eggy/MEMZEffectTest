@@ -67,6 +67,9 @@ namespace MEMZEffect
         [DllImport("gdi32.dll")]
         private static extern bool PlgBlt(IntPtr hdcDest, POINT[] lpPoint, IntPtr hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight, IntPtr hbmMask, int xMask, int yMask);
 
+        [DllImport("gdi32.dll")]
+        private static extern bool SetPixel(IntPtr hdc, int x, int y, int crColor);
+
         // 常量定义
         private const uint SRCCOPY = 0x00CC0020;
         private const uint NOTSRCCOPY = 0x00330008;
@@ -655,15 +658,23 @@ namespace MEMZEffect
                 int y = GetRandom(0, height);
                 int stripeHeight = GetRandom(5, 20);
                 
-                for (int x = 0; x < width; x++)
+                // 确保条纹不会超出屏幕范围
+                int endY = Math.Min(y + stripeHeight, height);
+                
+                // 绘制完整的彩虹条纹，而不仅仅是单行
+                for (int currentY = y; currentY < endY; currentY++)
                 {
-                    // 创建彩虹色
-                    int r = (int)(Math.Sin(x * 0.02 + i) * 127 + 128);
-                    int g = (int)(Math.Sin(x * 0.02 + i + 2) * 127 + 128);
-                    int b = (int)(Math.Sin(x * 0.02 + i + 4) * 127 + 128);
-                    
-                    // 绘制像素点
-                    SetPixel(dc, x, y, Color.FromArgb(r, g, b));
+                    for (int x = 0; x < width; x++)
+                    {
+                        // 创建彩虹色
+                        int r = (int)(Math.Sin(x * 0.02 + i) * 127 + 128);
+                        int g = (int)(Math.Sin(x * 0.02 + i + 2) * 127 + 128);
+                        int b = (int)(Math.Sin(x * 0.02 + i + 4) * 127 + 128);
+                        
+                        // 转换Color到COLORREF格式并绘制像素
+                        int colorRef = Color.FromArgb(r, g, b).ToArgb() & 0x00FFFFFF; // 去掉alpha通道
+                        SetPixel(dc, x, currentY, colorRef);
+                    }
                 }
             }
             
@@ -718,9 +729,5 @@ namespace MEMZEffect
             
             ReleaseDC(IntPtr.Zero, dc);
         }
-        
-        // 辅助函数：设置像素颜色（需要添加DllImport）
-        [DllImport("gdi32.dll")]
-        private static extern bool SetPixel(IntPtr hdc, int X, int Y, Color crColor);
     }
 }
