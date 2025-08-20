@@ -220,44 +220,48 @@ namespace MEMZEffect
             int screenHeight = GetScreenHeight();
             int mouseX = GetMouseX();
             int mouseY = GetMouseY();
-
-            // 在鼠标位置和随机位置绘制各种图标
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
-            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
+        
+            // 定义图标ID数组
+            int[] iconIds = { IDI_ERROR, IDI_APPLICATION, IDI_HAND, IDI_WARNING, 
+                              IDI_SHIELD, IDI_INFORMATION, IDI_WINLOGO, IDI_QUESTION };
+        
+            // 随机选择一个图标ID
+            int randomIconId = iconIds[GetRandom(0, iconIds.Length - 1)];
+        
+            // 在鼠标位置和随机位置绘制随机选中的图标
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), 
+                     LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), 
+                     LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), 
+                     LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+            DrawIcon(dc, GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight), 
+                     LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
 
             ReleaseDC(IntPtr.Zero, dc);
         }
 
-        // 鼠标画一大堆图标
+        // 鼠标画随机图标
         public static void DrawIconsAtMouse()
         {
             IntPtr dc = GetDC(IntPtr.Zero);
             int mouseX = GetMouseX();
             int mouseY = GetMouseY();
-
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_ERROR)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_APPLICATION)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_HAND)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WARNING)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_SHIELD)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_INFORMATION)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_WINLOGO)));
-            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(IDI_QUESTION)));
-
+        
+            // 定义图标ID数组
+            int[] iconIds = { IDI_ERROR, IDI_APPLICATION, IDI_HAND, IDI_WARNING, 
+                              IDI_SHIELD, IDI_INFORMATION, IDI_WINLOGO, IDI_QUESTION };
+        
+            // 随机选择一个图标ID
+            int randomIconId = iconIds[GetRandom(0, iconIds.Length - 1)];
+        
+            // 绘制随机选中的图标
+            DrawIcon(dc, mouseX, mouseY, LoadIcon(IntPtr.Zero, MAKEINTRESOURCE(randomIconId)));
+        
             ReleaseDC(IntPtr.Zero, dc);
         }
 

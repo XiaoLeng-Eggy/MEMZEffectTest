@@ -53,7 +53,7 @@ namespace MEMZEffectTest
             effectListBox.Items.Add("显示鼠标");
             effectListBox.Items.Add("随机位置画图标");
             effectListBox.Items.Add("疯狂画图标");
-            effectListBox.Items.Add("鼠标画一大堆图标");
+            effectListBox.Items.Add("鼠标画随机图标");
 
             // 添加对应的动作
             effectActions.Add(() => EffectModule.ScreenInvert());
