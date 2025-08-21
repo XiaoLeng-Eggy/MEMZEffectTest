@@ -33,7 +33,6 @@ namespace MEMZEffect
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
 
-
         [DllImport("gdi32.dll")]
         private static extern bool StretchBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int nWidthSrc, int nHeightSrc, uint dwRop);
 
@@ -47,7 +46,7 @@ namespace MEMZEffect
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder lpString, int nMaxCount);
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
@@ -70,6 +69,9 @@ namespace MEMZEffect
         [DllImport("gdi32.dll")]
         private static extern bool SetPixel(IntPtr hdc, int x, int y, int crColor);
 
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool PlaySound(string pszSound, IntPtr hmod, uint fdwSound);
+
         // 常量定义
         private const uint SRCCOPY = 0x00CC0020;
         private const uint NOTSRCCOPY = 0x00330008;
@@ -88,6 +90,26 @@ namespace MEMZEffect
         private const int IDI_WINLOGO = 32517;
         private const int IDI_HAND = 32513;
         private const int IDI_ASTERISK = 32516;
+
+        // 播放声音的常量定义
+        private const uint SND_FILENAME = 0x00020000;
+        private const uint SND_ALIAS = 0x00010000;
+        private const uint SND_ASYNC = 0x00000001;
+        private const uint SND_NODEFAULT = 0x00000002;
+
+        // 系统声音别名
+        private static readonly string[] SystemSoundAliases =
+        {
+            "SystemAsterisk",     // 信息提示音
+            "SystemExclamation",  // 警告提示音
+            "SystemHand",         // 错误提示音
+            "SystemQuestion",     // 问题提示音
+            "SystemStart",        // 启动提示音
+            "SystemExit",         // 退出提示音
+            "SystemMenuCommand",  // 菜单命令提示音
+            "SystemMenuPopup",    // 菜单弹出提示音
+            "SystemDefault"
+        };
 
         // 结构定义
         [StructLayout(LayoutKind.Sequential)]
@@ -603,6 +625,20 @@ namespace MEMZEffect
             int screenWidth = GetScreenWidth();
             int screenHeight = GetScreenHeight();
             SetCursorPos(GetRandom(-screenWidth, screenWidth), GetRandom(-screenHeight, screenHeight));
+        }
+
+        // 随机播放系统声音
+        public static void RandomPlaySystemSound()
+        {
+            Random random = new Random();
+            int index = random.Next(0, SystemSoundAliases.Length);
+            string soundAlias = SystemSoundAliases[index];
+
+            // 播放选定的系统声音
+            // 使用SND_ALIAS标志指定播放系统预定义声音
+            // 使用SND_ASYNC标志允许声音异步播放，不阻塞程序
+            // 使用SND_NODEFAULT标志防止在声音无法播放时播放默认声音
+            PlaySound(soundAlias, IntPtr.Zero, SND_ALIAS | SND_ASYNC | SND_NODEFAULT);
         }
 
         // ===== 新增效果 =====

@@ -54,6 +54,7 @@ namespace MEMZEffectTest
             effectListBox.Items.Add("随机位置画图标");
             effectListBox.Items.Add("疯狂画图标");
             effectListBox.Items.Add("鼠标画随机图标");
+            effectListBox.Items.Add("随机播放系统声音");
 
             // 添加对应的动作
             effectActions.Add(() => EffectModule.ScreenInvert());
@@ -79,6 +80,7 @@ namespace MEMZEffectTest
             effectActions.Add(() => EffectModule.DrawIconsAtRandomPositions());
             effectActions.Add(() => EffectModule.DrawIconsCrazy());
             effectActions.Add(() => EffectModule.DrawIconsAtMouse());
+            effectActions.Add(() => EffectModule.RandomPlaySystemSound());
 
             // 默认选择第一个效果
             if (effectListBox.Items.Count > 0)
