@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace MEMZEffectTest
 {
@@ -39,20 +32,23 @@ namespace MEMZEffectTest
             effectListBox.Items.Add("屏幕网格效果");
             effectListBox.Items.Add("彩虹效果");
             effectListBox.Items.Add("屏幕波浪效果");
-            effectListBox.Items.Add("屏幕闪烁");
+            // 注释掉屏幕闪烁效果，避免闪屏
+            //effectListBox.Items.Add("屏幕闪烁");
             effectListBox.Items.Add("彩虹猫中隧道");
             effectListBox.Items.Add("彩虹猫左隧道");
             effectListBox.Items.Add("彩虹猫右隧道");
             effectListBox.Items.Add("彩虹猫上隧道");
             effectListBox.Items.Add("彩虹猫下隧道");
+            effectListBox.Items.Add("斜屏幕转圈圈");
             effectListBox.Items.Add("屏幕融化");
             effectListBox.Items.Add("鼠标抖动");
             effectListBox.Items.Add("鼠标乱动");
             effectListBox.Items.Add("隐藏鼠标");
             effectListBox.Items.Add("显示鼠标");
             effectListBox.Items.Add("随机位置画图标");
-            effectListBox.Items.Add("疯狂画图标");
+            effectListBox.Items.Add("鼠标和随机位置疯狂画图标");
             effectListBox.Items.Add("鼠标画随机图标");
+            effectListBox.Items.Add("随机位置弹出消息框");
             effectListBox.Items.Add("随机播放系统声音");
 
             // 添加对应的动作
@@ -65,12 +61,13 @@ namespace MEMZEffectTest
             effectActions.Add(() => EffectModule.ScreenGridEffect());
             effectActions.Add(() => EffectModule.RainbowEffect());
             effectActions.Add(() => EffectModule.ScreenWaveEffect());
-            effectActions.Add(() => EffectModule.ScreenFlash());
+            // effectActions.Add(() => EffectModule.ScreenFlash());
             effectActions.Add(() => EffectModule.NyanCatMiddleTunnel());
             effectActions.Add(() => EffectModule.NyanCatLeftTunnel());
             effectActions.Add(() => EffectModule.NyanCatRightTunnel());
             effectActions.Add(() => EffectModule.NyanCatTopTunnel());
             effectActions.Add(() => EffectModule.NyanCatBottomTunnel());
+            effectActions.Add(() => EffectModule.ScreenSkewRotate());
             effectActions.Add(() => EffectModule.ScreenMelt());
             effectActions.Add(() => EffectModule.MouseShake());
             effectActions.Add(() => EffectModule.MouseRandomMove());
@@ -79,6 +76,7 @@ namespace MEMZEffectTest
             effectActions.Add(() => EffectModule.DrawIconsAtRandomPositions());
             effectActions.Add(() => EffectModule.DrawIconsCrazy());
             effectActions.Add(() => EffectModule.DrawIconsAtMouse());
+            effectActions.Add(() => EffectModule.ShowRandomMessageBox());
             effectActions.Add(() => EffectModule.RandomPlaySystemSound());
 
             // 默认选择第一个效果
@@ -99,7 +97,7 @@ namespace MEMZEffectTest
         private void speedTrackBar_Scroll(object sender, EventArgs e)
         {
             effectTimer.Interval = speedTrackBar.Value;
-            speedLabel.Text = string.Format("速度 ({0}ms)", speedTrackBar.Value);
+            speedLabel.Text = $"速度 ({speedTrackBar.Value}ms)";
         }
 
         private void effectTimer_Tick(object sender, EventArgs e)
@@ -115,7 +113,7 @@ namespace MEMZEffectTest
                 catch (Exception ex)
                 {
                     // 简单异常处理
-                    Console.WriteLine("效果执行错误: " + ex.Message);
+                    MessageBox.Show($"效果执行错误: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else if (effectListBox.SelectedIndex >= 0 && effectListBox.SelectedIndex < effectActions.Count)
@@ -128,7 +126,7 @@ namespace MEMZEffectTest
                 catch (Exception ex)
                 {
                     // 简单异常处理
-                    Console.WriteLine("效果执行错误: " + ex.Message);
+                    MessageBox.Show($"效果执行错误: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

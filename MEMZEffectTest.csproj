@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EffectModule.cs" />
-    <Compile Include="EffectModule.WindowsAPI.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
